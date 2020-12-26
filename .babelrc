@@ -6,5 +6,8 @@
           "node": "14"
         }
       }]
+  ],
+  "plugins": [
+    ["@babel/plugin-syntax-class-properties"]
   ]
 }

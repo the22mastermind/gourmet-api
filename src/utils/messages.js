@@ -1,0 +1,32 @@
+const messages = {
+  emptyFirstName: 'First name is required',
+  minFirstName: 'First name length must be greater than 3 characters',
+  maxFirstName: 'First name length must be less than 30 characters',
+  invalidFirstName: 'First name must contain only characters. Symbols and numbers not allowed',
+  emptyLastName: 'Last name is required',
+  minLastName: 'Last name length must be greater than 3 characters',
+  maxLastName: 'Last name length must be less than 30 characters',
+  invalidLastName: 'Last name must contain only characters. Symbols and numbers not allowed',
+  emptyPhone: 'Phone number is required',
+  minPhone: 'Phone number length must be 12',
+  maxPhone: 'Phone number length must be 12',
+  invalidPhone: 'Phone number must include the country code. For example: +250731110731',
+  emptyAddress: 'Address is required',
+  emptyPassword: 'Password is required',
+  minPassword: 'Password length must be greater than 6',
+  maxPassword: 'Phone number length must be less than 20',
+  invalidPassword: 'Password must include at least a symbol and a number',
+  signupConflict: 'Phone number already registered. Please login or create a new account',
+  otpMessage: 'Your Gourmet verification code is',
+  signupSuccessful: 'Account created successfully',
+  emptyOTP: 'Please provide the OTP we sent to your phone number',
+  invalidOTP: 'OTP must be a 6 digit number',
+  wrongOTP: 'Invalid OTP! Please try again',
+  verifySuccessful: 'Verification successful',
+  invalidRequest: 'Invalid request, token not found',
+  invalidToken: 'Invalid token, please login and try again',
+  resendOTPSuccessful: 'OTP sent successfully',
+};
+
+export default messages;
+
