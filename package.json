@@ -53,6 +53,7 @@
     "create-db": "npx sequelize-cli db:create",
     "drop-db": "npx sequelize-cli db:drop",
     "migrate": "npx sequelize-cli db:migrate",
-    "pretest": "yarn drop-db && yarn create-db && yarn migrate"
+    "pretest": "yarn drop-db && yarn create-db && yarn migrate",
+    "heroku-postbuild": "yarn migrate"
   }
 }
