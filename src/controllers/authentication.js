@@ -4,6 +4,7 @@ import messages from '../utils/messages';
 import misc from '../helpers/misc';
 import services from '../services/services';
 import models from '../database/models';
+import redisClient from '../config/redisConfig';
 
 const {
   created,
@@ -15,6 +16,8 @@ const {
   signupSuccessful,
   verifySuccessful,
   resendOTPSuccessful,
+  loginSuccessful,
+  logoutSuccessful,
 } = messages;
 const {
   successResponse,
@@ -93,6 +96,27 @@ export default class Authentication {
       return successResponse(res, success, resendOTPSuccessful, null, null);
     } catch (error) {
       return errorResponse(res, serverError, error);
+    }
+  };
+
+  static login = async (req, res) => {
+    try {
+      const tokenData = _.omit(req.userData, ['password', 'otp']);
+      const token = await generateToken(tokenData);
+      const data = _.omit(req.userData, ['id', 'password', 'otp']);
+      return successResponse(res, success, loginSuccessful, token, data);
+    } catch (error) {
+      return errorResponse(res, serverError, error);
+    }
+  };
+
+  static logout = async (req, res) => {
+    try {
+      const token = req.get('authorization').split(' ').pop();
+      redisClient.sadd('token', token);
+      return successResponse(res, success, logoutSuccessful, null, null);
+    } catch (error) {
+      return errorResponse(res, unauthorized, loginUserWrongCredentials);
     }
   };
 };
