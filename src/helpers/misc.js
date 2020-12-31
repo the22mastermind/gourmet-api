@@ -51,6 +51,11 @@ const generateHashedPassword = async (password) => {
   return hashedPassword;
 };
 
+const isPasswordValid = async (password, dbPassword) => {
+  const isValid = await bcrypt.compare(password, dbPassword);
+  return isValid;
+};
+
 export default {
   returnErrorMessages,
   successResponse,
@@ -59,4 +64,5 @@ export default {
   generateOTP,
   sendOTP,
   generateHashedPassword,
+  isPasswordValid,
 };

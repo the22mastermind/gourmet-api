@@ -70,7 +70,31 @@ const verifyOTP = (data) => {
   });
 };
 
+const login = (data) => {
+  const schema = Joi.object({
+    phoneNumber: Joi.string().regex(/^[+]+([0-9]{11,12})$/).required().messages(createErrorMessages(
+      'string',
+      `${messages.emptyPhone}`,
+      `${messages.invalidPhone}`,
+      `${messages.invalidPhone}`,
+      `${messages.invalidPhone}`,
+    )),
+    password: Joi.string().regex(/^(?=.*[!@#$%^&*?])[0-9a-zA-Z!@#$%^&*?]{6,20}$/).required().messages(createErrorMessages(
+      'string',
+      `${messages.emptyPassword}`,
+      `${messages.minPassword}`,
+      `${messages.maxPassword}`,
+      `${messages.invalidPassword}`,
+    )),
+  });
+  return schema.validate(data, {
+    abortEarly: false,
+    allowUnknown: false,
+  });
+};
+
 export default {
   signup,
   verifyOTP,
+  login,
 };
