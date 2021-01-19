@@ -56,6 +56,18 @@ const isPasswordValid = async (password, dbPassword) => {
   return isValid;
 };
 
+const parseOrderContents = async (contents, orderId) => {
+  const contentsWithOrderId = [];
+  contents.forEach((item) => {
+    const itemData = {
+      ...item,
+      orderId,
+    };
+    contentsWithOrderId.push(itemData);
+  });
+  return contentsWithOrderId;
+};
+
 export default {
   returnErrorMessages,
   successResponse,
@@ -65,4 +77,5 @@ export default {
   sendOTP,
   generateHashedPassword,
   isPasswordValid,
+  parseOrderContents,
 };
