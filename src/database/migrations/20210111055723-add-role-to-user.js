@@ -8,7 +8,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('Users', 'role',
     {
-      allowNull: false,
+      allowNull: true,
       type: Sequelize.ENUM(CUSTOMER, STAFF, ADMIN),
     });
   },
