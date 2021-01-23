@@ -60,18 +60,18 @@ const checkUserToken = async (req, res, next) => {
   try {
     token = token.split(' ').pop();
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const { phoneNumber } = decodedToken;
+    const condition = { phoneNumber };
+    const userData = await findByCondition(User, condition);
     return redisClient.smembers('token', async (err, tokensArray) => {
       if (err) {
         return errorResponse(res, serverError, err.message);
       }
-      if (tokensArray.includes(token)) {
+      if (tokensArray.includes(token, 0) || !userData) {
         return errorResponse(res, unauthorized, invalidToken);
       }
-      const { phoneNumber } = decodedToken;
-      const condition = { phoneNumber };
-      const userData = await findByCondition(User, condition);
       req.userData = userData.dataValues;
-      next();
+      return next();
     });
   } catch (error) {
     return errorResponse(res, badRequest, invalidToken);

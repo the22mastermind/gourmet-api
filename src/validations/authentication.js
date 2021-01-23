@@ -97,4 +97,5 @@ export default {
   signup,
   verifyOTP,
   login,
+  createErrorMessages,
 };

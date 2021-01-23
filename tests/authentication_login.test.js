@@ -132,6 +132,8 @@ describe('LOGIN', () => {
         expect(data.status).to.be.a('boolean');
         expect(data.status).to.equal(true);
         expect(data.phoneNumber).to.equal(process.env.TWILIO_CUSTOMER_NUMBER);
+        expect(data).to.haveOwnProperty('role');
+        expect(data.role).to.equal('customer');
         userToken = token;
         done();
       });

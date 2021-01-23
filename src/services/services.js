@@ -22,8 +22,14 @@ const updateByCondition = async (model, data, condition) => {
   return updated[1];
 };
 
+const saveManyRows = async (model, obj) => {
+  const data = await model.bulkCreate(obj);
+  return data;
+};
+
 export default {
   saveData,
   findByCondition,
   updateByCondition,
+  saveManyRows,
 };

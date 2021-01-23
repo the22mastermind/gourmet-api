@@ -5,6 +5,7 @@ import misc from '../helpers/misc';
 import services from '../services/services';
 import models from '../database/models';
 import redisClient from '../config/redisConfig';
+import roles from '../utils/roles';
 
 const {
   created,
@@ -29,6 +30,7 @@ const {
 } = misc;
 const { saveData, updateByCondition } = services;
 const { User } = models;
+const { CUSTOMER } = roles;
 
 export default class Authentication {
   static signUp = async (req, res) => {
@@ -49,6 +51,7 @@ export default class Authentication {
         address,
         password: hashedPassword,
         otp: otpCode,
+        role: CUSTOMER,
       };
 
       // Save user data in db
