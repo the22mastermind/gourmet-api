@@ -27,9 +27,56 @@ const saveManyRows = async (model, obj) => {
   return data;
 };
 
+const findOrderByConditionAll = async (model, condition, contents, user) => {
+  const data = await model.findOne(
+    {
+      where: condition,
+      include: [
+        { model: contents },
+        {
+          model: user,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'phoneNumber',
+            'address',
+          ],
+        },
+      ],
+    });
+  return data;
+};
+
+const findAllOrders = async (model, contents, user) => {
+  const data = await model.findAll(
+    {
+      order: [
+        ['id', 'DESC'],
+      ],
+      include: [
+        { model: contents },
+        {
+          model: user,
+          attributes: [
+            'id',
+            'firstName',
+            'lastName',
+            'phoneNumber',
+            'address',
+            'createdAt',
+          ],
+        },
+      ],
+    });
+  return data;
+};
+
 export default {
   saveData,
   findByCondition,
   updateByCondition,
   saveManyRows,
+  findOrderByConditionAll,
+  findAllOrders,
 };

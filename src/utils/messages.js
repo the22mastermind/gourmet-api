@@ -42,6 +42,11 @@ const messages = {
   invalidItemQuantity: 'Item quantity must be a positive number greater or equal to 1',
   emptyPaymentId: 'PaymentId is required',
   invalidPaymentId: 'PaymentId must be a string',
+  missingId: 'id is required',
+  invalidId: 'id must be a number',
+  orderNotFound: 'Order not found',
+  adminOnlyResource: 'You are not allowed to use this resource',
+  ordersListNotFound: 'No orders found at the moment',
 };
 
 export default messages;
