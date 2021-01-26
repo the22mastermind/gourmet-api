@@ -8,12 +8,12 @@ const { checkUserToken } = authMiddleware;
 const {
   validatePlaceOrder,
   validateGetOrder,
-  findOrderById,
+  findUserOrderById,
 } = ordersMiddleware;
 
 const ordersRoutes = express.Router();
 
 ordersRoutes.post('/', validatePlaceOrder, checkUserToken, placeOrder);
-ordersRoutes.get('/:id', validateGetOrder, checkUserToken, findOrderById, getSpecificOrder );
+ordersRoutes.get('/:id', validateGetOrder, checkUserToken, findUserOrderById, getSpecificOrder );
 
 export default ordersRoutes;

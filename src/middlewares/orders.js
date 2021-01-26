@@ -41,6 +41,22 @@ const findOrderById = async (req, res, next) => {
   }
 };
 
+const findUserOrderById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const userId = req.userData.id;
+    const condition = { id, userId };
+    const orderData = await findOrderByConditionAll(Order, condition, Contents, User);
+    if (!orderData) {
+      return errorResponse(res, notFound, orderNotFound);
+    }
+    req.orderData = orderData.dataValues;
+    return next();
+  } catch (error) {
+    return errorResponse(res, serverError, error);
+  }
+};
+
 const findOrdersList = async (req, res, next) => {
   try {
     const orders = await findAllOrders(Order, Contents, User);
@@ -59,4 +75,5 @@ export default {
   validateGetOrder,
   findOrderById,
   findOrdersList,
+  findUserOrderById,
 };
