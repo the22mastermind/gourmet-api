@@ -3,19 +3,33 @@
         "es2021": true,
         "node": true
     },
+    "globals": {
+        "describe": "readonly",
+        "it": "readonly"
+    },
+    "plugins": [
+        "jsdoc"
+    ],
     "extends": [
-        "airbnb-base"
+        "airbnb-base",
+        "eslint:recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 12,
         "sourceType": "module"
     },
     "rules": {
-        "no-undef": [
-            "error",
+        "no-shadow": 0,
+        "no-undef": "error",
+        "jsdoc/require-jsdoc": [
+            1,
             {
-                "argsIgnorePattern": "describe|it"
+                "require": {
+                    "FunctionExpression": true,
+                    "ClassDeclaration": true
+                }
             }
         ]
-    }
+    },
+    "parser": "babel-eslint"
 }
