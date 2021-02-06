@@ -1,6 +1,14 @@
 import Joi from 'joi';
 import messages from '../utils/messages';
 
+/**
+ * @description Returns error messages for a schema key
+ * @param {string} type
+ * @param {string} empty Empty message
+ * @param {string} min Minimun length message
+ * @param {string} max Maximum length message
+ * @param {string} pattern Regex pattern message
+ */
 const createErrorMessages = (type, empty, min, max, pattern) => ({
   [`${type}.empty`]: empty,
   [`${type}.format`]: pattern,
@@ -10,6 +18,11 @@ const createErrorMessages = (type, empty, min, max, pattern) => ({
   'any.required': empty,
 });
 
+/**
+ * @description Validates the firstName, lastName, phoneNumber, address, and password properties
+ * @param {object} data
+ * @returns {object} Validation result object
+ */
 const signup = (data) => {
   const schema = Joi.object({
     firstName: Joi.string().regex(/^([a-zA-Z]{3,30})+$/).required().messages(createErrorMessages(
@@ -54,6 +67,11 @@ const signup = (data) => {
   });
 };
 
+/**
+ * @description Validates the otp property to check if the value is a 6-digit number
+ * @param {object} data
+ * @returns {object} Validation result object
+ */
 const verifyOTP = (data) => {
   const schema = Joi.object({
     otp: Joi.string().regex(/^([0-9]{6})+$/).required().messages(createErrorMessages(
@@ -70,6 +88,11 @@ const verifyOTP = (data) => {
   });
 };
 
+/**
+ * @description Validates the phoneNumber and password properties on login
+ * @param {object} data
+ * @returns {object} Validation result object
+ */
 const login = (data) => {
   const schema = Joi.object({
     phoneNumber: Joi.string().regex(/^[+]+([0-9]{11,12})$/).required().messages(createErrorMessages(

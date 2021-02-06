@@ -11,6 +11,7 @@ const {
   created,
   serverError,
   success,
+  unauthorized,
 } = statusCodes;
 const {
   otpMessage,
@@ -19,6 +20,7 @@ const {
   resendOTPSuccessful,
   loginSuccessful,
   logoutSuccessful,
+  loginUserWrongCredentials,
 } = messages;
 const {
   successResponse,
@@ -32,10 +34,25 @@ const { saveData, updateByCondition } = services;
 const { User } = models;
 const { CUSTOMER } = roles;
 
+/**
+ * @description Class to handle authentication
+ */
 export default class Authentication {
+  /**
+   * @description Method that creates a new user account on signup
+   * @param {object} req Request object
+   * @param {object} res Response object
+   * @returns {object} Success | error response object
+   */
   static signUp = async (req, res) => {
     try {
-      const { firstName, lastName, phoneNumber, address, password } = req.body;
+      const {
+        firstName,
+        lastName,
+        phoneNumber,
+        address,
+        password,
+      } = req.body;
 
       // Hash password to avoid storing plain-text password in the db
       const hashedPassword = await generateHashedPassword(password);
@@ -76,6 +93,12 @@ export default class Authentication {
     }
   };
 
+  /**
+   * @description Method that verifies/activates a user account after signup
+   * @param {object} req Request object
+   * @param {object} res Response object
+   * @returns {object} Success | error response object
+   */
   static verify = async (req, res) => {
     try {
       const { phoneNumber } = req.userData;
@@ -89,6 +112,12 @@ export default class Authentication {
     }
   };
 
+  /**
+   * @description Method that resends the OTP SMS
+   * @param {object} req Request object
+   * @param {object} res Response object
+   * @returns {object} Success | error response object
+   */
   static resendOTP = async (req, res) => {
     try {
       const { phoneNumber } = req.userData;
@@ -102,6 +131,12 @@ export default class Authentication {
     }
   };
 
+  /**
+   * @description Method that login a user
+   * @param {object} req Request object
+   * @param {object} res Response object
+   * @returns {object} Success | error response object
+   */
   static login = async (req, res) => {
     try {
       const tokenData = _.omit(req.userData, ['password', 'otp']);
@@ -113,6 +148,12 @@ export default class Authentication {
     }
   };
 
+  /**
+   * @description Method that logout a user by blacklisting their token
+   * @param {object} req Request object
+   * @param {object} res Response object
+   * @returns {object} Success | error response object
+   */
   static logout = async (req, res) => {
     try {
       const token = req.get('authorization').split(' ').pop();
@@ -122,4 +163,4 @@ export default class Authentication {
       return errorResponse(res, unauthorized, loginUserWrongCredentials);
     }
   };
-};
+}

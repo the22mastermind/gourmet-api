@@ -9,13 +9,16 @@ const { User } = models;
 const { generateHashedPassword } = misc;
 const { ADMIN } = roles;
 
+/**
+ * @description Creates the admin account
+ */
 const createAdmin = async () => {
   const password = await generateHashedPassword(process.env.ADMIN_PASSWORD);
   const adminData = {
     firstName: 'Jane',
     lastName: 'Doe',
     phoneNumber: process.env.ADMIN_PHONE,
-    password: password,
+    password,
     address: 'KK 185 St, 211, 10th Floor, 1',
     status: true,
     role: ADMIN,

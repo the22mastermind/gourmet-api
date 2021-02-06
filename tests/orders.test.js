@@ -9,6 +9,7 @@ const {
   success,
   created,
   notFound,
+  conflict,
 } = statusCodes;
 const {
   loginSuccessful,
@@ -20,6 +21,10 @@ const {
   invalidId,
   orderNotFound,
   ordersListNotFound,
+  orderUpdateSuccess,
+  orderUpdateConflict,
+  orderUpdateInvalidStatus,
+  orderUpdateEmptyStatus,
 } = messages;
 const baseUrl = '/api/orders';
 const adminUrl = '/api/admin/orders';
@@ -41,7 +46,7 @@ describe('ADMIN GET UNEXISTANT ORDER', () => {
       })
       .end((err, res) => {
         if (err) done(err);
-        const { message, token} = res.body;
+        const { message, token } = res.body;
         expect(res.status).to.equal(success);
         expect(message);
         expect(message).to.equal(loginSuccessful);
@@ -94,7 +99,7 @@ describe('CUSTOMER PLACE ORDER', () => {
       })
       .end((err, res) => {
         if (err) done(err);
-        const { message, token} = res.body;
+        const { message, token } = res.body;
         expect(res.status).to.equal(success);
         expect(message);
         expect(message).to.equal(loginSuccessful);
@@ -110,7 +115,7 @@ describe('CUSTOMER PLACE ORDER', () => {
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         total: 8.00,
-        paymentId: '123456789'
+        paymentId: '123456789',
       })
       .end((err, res) => {
         if (err) done(err);
@@ -129,7 +134,7 @@ describe('CUSTOMER PLACE ORDER', () => {
       .send({
         total: 8.00,
         contents: [],
-        paymentId: '123456789'
+        paymentId: '123456789',
       })
       .end((err, res) => {
         if (err) done(err);
@@ -154,7 +159,7 @@ describe('CUSTOMER PLACE ORDER', () => {
             quantity: 1,
           },
         ],
-        paymentId: '123456789'
+        paymentId: '123456789',
       })
       .end((err, res) => {
         if (err) done(err);
@@ -179,7 +184,7 @@ describe('CUSTOMER PLACE ORDER', () => {
             quantity: 1,
           },
         ],
-        paymentId: '123456789'
+        paymentId: '123456789',
       })
       .end((err, res) => {
         if (err) done(err);
@@ -204,7 +209,7 @@ describe('CUSTOMER PLACE ORDER', () => {
             quantity: 1,
           },
         ],
-        paymentId: '123456789'
+        paymentId: '123456789',
       })
       .end((err, res) => {
         if (err) done(err);
@@ -267,7 +272,7 @@ describe('CUSTOMER GET ORDER', () => {
       })
       .end((err, res) => {
         if (err) done(err);
-        const { message, token} = res.body;
+        const { message, token } = res.body;
         expect(res.status).to.equal(success);
         expect(message);
         expect(message).to.equal(loginSuccessful);
@@ -389,7 +394,7 @@ describe('ADMIN GET ORDER', () => {
       })
       .end((err, res) => {
         if (err) done(err);
-        const { message, token} = res.body;
+        const { message, token } = res.body;
         expect(res.status).to.equal(success);
         expect(message);
         expect(message).to.equal(loginSuccessful);
@@ -500,6 +505,155 @@ describe('ADMIN GET LIST OF ORDERS', () => {
         expect(data[0].User).to.haveOwnProperty('lastName');
         expect(data[0].User).to.haveOwnProperty('address');
         expect(data[0].User).to.haveOwnProperty('phoneNumber');
+        done();
+      });
+  });
+});
+
+describe('ADMIN UPDATE ORDER', () => {
+  it('Invalid order status should return 400', (done) => {
+    chai
+      .request(server)
+      .patch(`${adminUrl}/2`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        status: 'something',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { error } = res.body;
+        expect(res.status).to.equal(badRequest);
+        expect(error);
+        expect(error).to.equal(orderUpdateInvalidStatus);
+        done();
+      });
+  });
+  it('Missing order status should return 400', (done) => {
+    chai
+      .request(server)
+      .patch(`${adminUrl}/2`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .end((err, res) => {
+        if (err) done(err);
+        const { error } = res.body;
+        expect(res.status).to.equal(badRequest);
+        expect(error);
+        expect(error).to.equal(orderUpdateEmptyStatus);
+        done();
+      });
+  });
+  it('Unexistant order should return 404', (done) => {
+    chai
+      .request(server)
+      .patch(`${adminUrl}/200`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        status: 'accepted',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { error } = res.body;
+        expect(res.status).to.equal(notFound);
+        expect(error);
+        expect(error).to.equal(orderNotFound);
+        done();
+      });
+  });
+  it('Accepted order should return 200', (done) => {
+    chai
+      .request(server)
+      .patch(`${adminUrl}/2`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        status: 'accepted',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { message, data } = res.body;
+        expect(res.status).to.equal(success);
+        expect(message);
+        expect(message).to.equal(orderUpdateSuccess);
+        expect(data);
+        expect(data).to.be.a('object');
+        expect(data).to.haveOwnProperty('id');
+        expect(data.id).to.be.a('number');
+        expect(data.id).to.equal(2);
+        expect(data).to.haveOwnProperty('total');
+        expect(data).to.haveOwnProperty('status');
+        expect(data.status).to.equal('accepted');
+        expect(data).to.haveOwnProperty('paymentId');
+        expect(data).to.haveOwnProperty('userId');
+        done();
+      });
+  });
+  it('Existing order status should return 409', (done) => {
+    chai
+      .request(server)
+      .patch(`${adminUrl}/2`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        status: 'accepted',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { error } = res.body;
+        expect(res.status).to.equal(conflict);
+        expect(error);
+        expect(error).to.equal(orderUpdateConflict);
+        done();
+      });
+  });
+  it('On the move order should return 200', (done) => {
+    chai
+      .request(server)
+      .patch(`${adminUrl}/2`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        status: 'onthemove',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { message, data } = res.body;
+        expect(res.status).to.equal(success);
+        expect(message);
+        expect(message).to.equal(orderUpdateSuccess);
+        expect(data);
+        expect(data).to.be.a('object');
+        expect(data).to.haveOwnProperty('id');
+        expect(data.id).to.be.a('number');
+        expect(data.id).to.equal(2);
+        expect(data).to.haveOwnProperty('total');
+        expect(data).to.haveOwnProperty('status');
+        expect(data.status).to.equal('onthemove');
+        expect(data).to.haveOwnProperty('paymentId');
+        expect(data).to.haveOwnProperty('userId');
+        done();
+      });
+  });
+  it('Completed order should return 200', (done) => {
+    chai
+      .request(server)
+      .patch(`${adminUrl}/2`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        status: 'completed',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { message, data } = res.body;
+        expect(res.status).to.equal(success);
+        expect(message);
+        expect(message).to.equal(orderUpdateSuccess);
+        expect(data);
+        expect(data).to.be.a('object');
+        expect(data).to.haveOwnProperty('id');
+        expect(data.id).to.be.a('number');
+        expect(data.id).to.equal(2);
+        expect(data).to.haveOwnProperty('total');
+        expect(data).to.haveOwnProperty('status');
+        expect(data.status).to.equal('completed');
+        expect(data).to.haveOwnProperty('paymentId');
+        expect(data).to.haveOwnProperty('userId');
         done();
       });
   });

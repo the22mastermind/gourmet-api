@@ -47,7 +47,10 @@ const messages = {
   orderNotFound: 'Order not found',
   adminOnlyResource: 'You are not allowed to use this resource',
   ordersListNotFound: 'No orders found at the moment',
+  orderUpdateSuccess: 'Order updated successfully',
+  orderUpdateConflict: 'Update failed. Order status exists already',
+  orderUpdateEmptyStatus: 'Status is required',
+  orderUpdateInvalidStatus: 'Status must be one of [accepted, onthemove, completed]',
 };
 
 export default messages;
-
