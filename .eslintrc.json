@@ -21,15 +21,9 @@
     "rules": {
         "no-shadow": 0,
         "no-undef": "error",
-        "jsdoc/require-jsdoc": [
-            1,
-            {
-                "require": {
-                    "FunctionExpression": true,
-                    "ClassDeclaration": true
-                }
-            }
-        ]
+        "import/no-dynamic-require": 0,
+        "global-require": 0,
+        "no-unused-vars": 0
     },
     "parser": "babel-eslint"
 }

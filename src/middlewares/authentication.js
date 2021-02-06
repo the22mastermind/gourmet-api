@@ -35,11 +35,25 @@ const {
 } = messages;
 const { ADMIN } = roles;
 
+/**
+ * @description Wrapper function that exposes signup validation errors
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns {function} returnErrorMessages function
+ */
 const validateSignup = async (req, res, next) => {
   const { error } = signup(req.body);
   returnErrorMessages(error, res, next);
 };
 
+/**
+ * @description Checks if the phoneNumber is registered and returns a conflict error
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns JSON error message or  executes the next callback
+ */
 const isUserRegistered = async (req, res, next) => {
   const { phoneNumber } = req.body;
   const condition = { phoneNumber };
@@ -50,11 +64,25 @@ const isUserRegistered = async (req, res, next) => {
   return next();
 };
 
+/**
+ * @description Wrapper function that exposes verifyOTP validation errors
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns {function} returnErrorMessages function
+ */
 const validateVerifyOTP = async (req, res, next) => {
   const { error } = verifyOTP(req.body);
   returnErrorMessages(error, res, next);
 };
 
+/**
+ * @description Checks if the token in headers is valid, user exists, and user has not logged out
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns JSON error message or  executes the next callback
+ */
 const checkUserToken = async (req, res, next) => {
   let token = req.get('authorization');
   if (!token) {
@@ -81,6 +109,13 @@ const checkUserToken = async (req, res, next) => {
   }
 };
 
+/**
+ * @description Checks if the submitted OTP matches the user's OTP saved in the database
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns JSON error message or  executes the next callback
+ */
 const checkOTP = async (req, res, next) => {
   const { otp } = req.body;
   const userOTP = req.userData.otp;
@@ -90,11 +125,25 @@ const checkOTP = async (req, res, next) => {
   return next();
 };
 
+/**
+ * @description Wrapper function that exposes login validation errors
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns {function} returnErrorMessages function
+ */
 const validateLogin = async (req, res, next) => {
   const { error } = login(req.body);
   returnErrorMessages(error, res, next);
 };
 
+/**
+ * @description Checks if the user exists and if the submitted credentials are correct
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns JSON error message or  executes the next callback
+ */
 const checkLogin = async (req, res, next) => {
   try {
     const { phoneNumber, password } = req.body;
@@ -115,6 +164,13 @@ const checkLogin = async (req, res, next) => {
   }
 };
 
+/**
+ * @description Checks if the user making the request is an admin
+ * @param {object} req Request object
+ * @param {object} res Response object
+ * @param {function} next Callback function
+ * @returns JSON error message or  executes the next callback
+ */
 const checkAdminRole = async (req, res, next) => {
   try {
     const { role } = req.userData;
