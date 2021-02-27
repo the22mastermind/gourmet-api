@@ -120,8 +120,8 @@ export default class Authentication {
    */
   static resendOTP = async (req, res) => {
     try {
-      const { phoneNumber } = req.userData;
-      const otpCode = await generateOTP();
+      const { phoneNumber, otp } = req.userData;
+      const otpCode = parseInt(otp, 10);
       if (process.env.NODE_ENV === 'production') {
         await sendOTP(phoneNumber, `${otpMessage} ${otpCode}`);
       }

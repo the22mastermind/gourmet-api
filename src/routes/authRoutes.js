@@ -22,7 +22,7 @@ const {
 const authRoutes = express.Router();
 
 authRoutes.post('/signup', validateSignup, isUserRegistered, signUp);
-authRoutes.get('/verify', validateVerifyOTP, checkUserToken, checkOTP, verify);
+authRoutes.post('/verify', validateVerifyOTP, checkUserToken, checkOTP, verify);
 authRoutes.get('/verify/retry', checkUserToken, resendOTP);
 authRoutes.post('/login', validateLogin, checkLogin, login);
 authRoutes.get('/logout', checkUserToken, logout);
