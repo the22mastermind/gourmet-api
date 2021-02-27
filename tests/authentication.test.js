@@ -149,7 +149,7 @@ describe('VERIFY SIGNUP', () => {
   it('Empty request should return 400', (done) => {
     chai
       .request(server)
-      .get(`${baseUrl}verify`)
+      .post(`${baseUrl}verify`)
       .set('Authorization', `Bearer ${userToken}`)
       .end((err, res) => {
         if (err) done(err);
@@ -163,7 +163,7 @@ describe('VERIFY SIGNUP', () => {
   it('Invalid OTP should return 400', (done) => {
     chai
       .request(server)
-      .get(`${baseUrl}verify`)
+      .post(`${baseUrl}verify`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         otp: 'Ethan',
@@ -180,7 +180,7 @@ describe('VERIFY SIGNUP', () => {
   it('Unknown property should return 400', (done) => {
     chai
       .request(server)
-      .get(`${baseUrl}verify`)
+      .post(`${baseUrl}verify`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         otp: '123456',
@@ -198,7 +198,7 @@ describe('VERIFY SIGNUP', () => {
   it('Wrong OTP should return 400', (done) => {
     chai
       .request(server)
-      .get(`${baseUrl}verify`)
+      .post(`${baseUrl}verify`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         otp: '123456',
@@ -215,7 +215,7 @@ describe('VERIFY SIGNUP', () => {
   it('Valid OTP but absent token should return 400', (done) => {
     chai
       .request(server)
-      .get(`${baseUrl}verify`)
+      .post(`${baseUrl}verify`)
       .send({
         otp: userOTP,
       })
@@ -231,7 +231,7 @@ describe('VERIFY SIGNUP', () => {
   it('Valid OTP should return 200', (done) => {
     chai
       .request(server)
-      .get(`${baseUrl}verify`)
+      .post(`${baseUrl}verify`)
       .set('Authorization', `Bearer ${userToken}`)
       .send({
         otp: userOTP,
