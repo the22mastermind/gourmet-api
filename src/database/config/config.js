@@ -26,7 +26,6 @@ module.exports = {
     host: DEV_DB_HOSTNAME,
     port: DEV_DB_PORT,
     dialect: 'postgres',
-    ssl: true,
   },
   test: {
     username: CI_DB_USERNAME,
@@ -36,6 +35,12 @@ module.exports = {
     port: CI_DB_PORT,
     dialect: 'postgres',
     ssl: true,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     logging: false,
   },
   production: {
@@ -46,6 +51,12 @@ module.exports = {
     port: PROD_DB_PORT,
     dialect: 'postgres',
     ssl: true,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     logging: false,
   },
 };
