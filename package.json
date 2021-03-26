@@ -62,5 +62,8 @@
     "seed": "npx sequelize-cli db:seed:all",
     "create-menu": "babel-node ./src/database/scripts/menuScript.js",
     "lint": "yarn run eslint src/ && yarn run eslint tests/"
+  },
+  "engines": {
+    "node": "14.x"
   }
 }
