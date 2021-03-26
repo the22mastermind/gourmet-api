@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Item extends Model {
     /**
@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'menuId',
       });
     }
-  };
+  }
   Item.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     cost: DataTypes.DECIMAL,
     size: DataTypes.STRING,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Item',

@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     /**
@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
       });
     }
-  };
+  }
   Order.init({
     total: DataTypes.DECIMAL,
     status: DataTypes.STRING,
-    paymentId: DataTypes.STRING
+    paymentId: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Order',

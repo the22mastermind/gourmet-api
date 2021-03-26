@@ -12,7 +12,11 @@ const {
   errorResponse,
 } = helpers;
 const { Order, Contents, User } = models;
-const { findOrderByConditionAll, findAllOrders } = services;
+const {
+  findOrderByConditionAll,
+  findAllOrders,
+  findAllUserOrders,
+} = services;
 const { notFound, serverError, conflict } = statusCodes;
 const { orderNotFound, ordersListNotFound, orderUpdateConflict } = messages;
 
@@ -89,7 +93,14 @@ const findUserOrderById = async (req, res, next) => {
  */
 const findOrdersList = async (req, res, next) => {
   try {
-    const orders = await findAllOrders(Order, Contents, User);
+    let orders;
+    const userId = req.userData.id;
+    const condition = { userId };
+    if (req.userData.role === 'customer') {
+      orders = await findAllUserOrders(Order, Contents, condition);
+    } else {
+      orders = await findAllOrders(Order, Contents, User);
+    }
     if (_.isEmpty(orders)) {
       return errorResponse(res, notFound, ordersListNotFound);
     }
