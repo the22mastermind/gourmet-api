@@ -47,7 +47,7 @@ module.exports = {
         description: 'The best Cappucinno in town.',
         cost: 1.50,
         size: 'Medium',
-        image: 'https://www.istockphoto.com/photo/3d-paper-coffee-cup-and-lid-isolated-on-white-gm1165889671-320956287',
+        image: 'https://media.istockphoto.com/photos/paper-coffee-cup-and-lid-isolated-on-white-picture-id1165889671?s=612x612',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

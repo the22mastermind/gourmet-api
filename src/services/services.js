@@ -115,6 +115,45 @@ const findAllOrders = async (model, contents, user) => {
   return data;
 };
 
+/**
+ * @description Gets all the orders of a specific user with their contents info
+ * @param {string} model Order model
+ * @param {string} contents Contents model
+ * @param {object} condition Object with condition eg. { id: 1 }
+ * @returns {array} data
+ */
+const findAllUserOrders = async (model, contents, condition) => {
+  const data = await model.findAll(
+    {
+      where: condition,
+      order: [
+        ['id', 'DESC'],
+      ],
+      include: [
+        { model: contents },
+      ],
+    },
+  );
+  return data;
+};
+
+/**
+ * @description Gets the menu categories and menu items
+ * @param {string} model Menu model
+ * @param {string} model Items model
+ * @returns {array} data
+ */
+const findMenuItems = async (model, items) => {
+  const data = await model.findAll(
+    {
+      include: [
+        { model: items },
+      ],
+    },
+  );
+  return data;
+};
+
 export default {
   saveData,
   findByCondition,
@@ -122,4 +161,6 @@ export default {
   saveManyRows,
   findOrderByConditionAll,
   findAllOrders,
+  findAllUserOrders,
+  findMenuItems,
 };

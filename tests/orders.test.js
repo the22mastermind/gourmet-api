@@ -88,6 +88,42 @@ describe('ADMIN GET EMPTY LIST OF ORDERS', () => {
   });
 });
 
+describe('USER GET EMPTY LIST OF ORDERS', () => {
+  it('Valid login should return 200', (done) => {
+    chai
+      .request(server)
+      .post('/api/auth/login')
+      .send({
+        phoneNumber: process.env.TWILIO_CUSTOMER_NUMBER,
+        password: '@1helloworld',
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        const { message, token } = res.body;
+        expect(res.status).to.equal(success);
+        expect(message);
+        expect(message).to.equal(loginSuccessful);
+        expect(token).to.be.a('string');
+        userToken = token;
+        done();
+      });
+  });
+  it('Orders list not found should return 404', (done) => {
+    chai
+      .request(server)
+      .get(baseUrl)
+      .set('Authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        if (err) done(err);
+        const { error } = res.body;
+        expect(res.status).to.equal(notFound);
+        expect(error);
+        expect(error).to.equal(ordersListNotFound);
+        done();
+      });
+  });
+});
+
 describe('CUSTOMER PLACE ORDER', () => {
   it('Valid login should return 200', (done) => {
     chai
@@ -381,6 +417,33 @@ describe('CUSTOMER GET ORDER', () => {
         done();
       });
   });
+  it('Orders found should return 200', (done) => {
+    chai
+      .request(server)
+      .get(baseUrl)
+      .set('Authorization', `Bearer ${userToken}`)
+      .end((err, res) => {
+        if (err) done(err);
+        const { data } = res.body;
+        expect(res.status).to.equal(success);
+        expect(data);
+        expect(data).to.be.a('array');
+        expect(data[0]).to.haveOwnProperty('id');
+        expect(data[0].id).to.be.a('number');
+        expect(data[0]).to.haveOwnProperty('total');
+        expect(data[0]).to.haveOwnProperty('status');
+        expect(data[0].status).to.equal('pending');
+        expect(data[0]).to.haveOwnProperty('paymentId');
+        expect(data[0]).to.haveOwnProperty('userId');
+        expect(data[0]).to.haveOwnProperty('Contents');
+        expect(data[0].Contents).to.be.a('array');
+        expect(data[0].Contents[0]).to.haveOwnProperty('itemId');
+        expect(data[0].Contents[0]).to.haveOwnProperty('itemName');
+        expect(data[0].Contents[0]).to.haveOwnProperty('cost');
+        expect(data[0].Contents[0]).to.haveOwnProperty('quantity');
+        done();
+      });
+  });
 });
 
 describe('ADMIN GET ORDER', () => {
@@ -487,7 +550,6 @@ describe('ADMIN GET LIST OF ORDERS', () => {
         expect(data).to.be.a('array');
         expect(data[0]).to.haveOwnProperty('id');
         expect(data[0].id).to.be.a('number');
-        expect(data[0].id).to.equal(2);
         expect(data[0]).to.haveOwnProperty('total');
         expect(data[0]).to.haveOwnProperty('status');
         expect(data[0].status).to.equal('pending');

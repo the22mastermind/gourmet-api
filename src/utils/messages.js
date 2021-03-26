@@ -51,6 +51,9 @@ const messages = {
   orderUpdateConflict: 'Update failed. Order status exists already',
   orderUpdateEmptyStatus: 'Status is required',
   orderUpdateInvalidStatus: 'Status must be one of [accepted, onthemove, completed]',
+  menuNotFound: 'Menu not found at the moment',
+  emptyAmount: 'Amount is required',
+  invalidAmount: 'Amount must be a positive number greater or equal to 1$',
 };
 
 export default messages;
