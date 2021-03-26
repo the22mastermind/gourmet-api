@@ -17,19 +17,23 @@ The API offers the following endpoints:
 | POST | /api/auth/login | Log in |
 | GET | /api/auth/logout | Log out |
 | POST | /api/orders | Create or place an order |
+| GET | /api/orders | User retrieve own list of orders |
 | GET | /api/orders/:id | User retrieve own single order |
+| GET | /api/menu | Retrieve menu categories and items |
+| POST | /api/payments | Create payment intent |
 | GET | /api/admin/orders/:id | Admin retrieve a single order |
 | GET | /api/admin/orders | Admin retrieve list of all the orders |
 | PATCH | /api/admin/orders/:id | Admin update status of a single order |
 
 <br/>
+
 ### Technologies used
 
 #### Databases
 1. PostgreSQL
 2. Redis
 
-#### Other libraries/frameworks
+#### Libraries/frameworks
 1. ExpressJS
 2. Sequelize ORM
 3. JSON Web Token
@@ -37,6 +41,7 @@ The API offers the following endpoints:
 5. Bcrypt
 6. Twilio
 7. Cors
+8. Stripe
 <br/><br/>
 
 ### CI/CD
