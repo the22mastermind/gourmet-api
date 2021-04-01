@@ -50,3 +50,7 @@ The API offers the following endpoints:
 
 ### Author
 Bertrand Masabo
+
+<br/>
+
+### Testing Locally
