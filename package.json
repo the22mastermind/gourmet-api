@@ -57,7 +57,7 @@
     "drop-db": "npx sequelize-cli db:drop",
     "migrate": "npx sequelize-cli db:migrate",
     "pretest": "yarn lint && yarn drop-db && yarn create-db && yarn migrate && yarn create-admin && yarn seed",
-    "heroku-postbuild": "yarn migrate && yarn create-admin",
+    "heroku-postbuild": "yarn migrate && yarn create-admin && yarn create-menu",
     "create-admin": "babel-node ./src/database/scripts/adminScript.js",
     "seed": "npx sequelize-cli db:seed:all",
     "create-menu": "babel-node ./src/database/scripts/menuScript.js",
